@@ -329,7 +329,8 @@ export default function AdminProductosPage() {
     );
   }
 
-  const ProductFormFields = () => (
+  // Convertimos esto en una función normal que devuelve JSX, no un Componente React
+  const renderFormFields = () => (
     <div className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
       {formErrors.general && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
@@ -605,7 +606,7 @@ export default function AdminProductosPage() {
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleCreateProduct}>
-                  <ProductFormFields />
+                  {renderFormFields()}
                   <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
                     <Button
                       type="button"
@@ -810,7 +811,7 @@ export default function AdminProductosPage() {
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleUpdateProduct}>
-            <ProductFormFields />
+            {renderFormFields()}
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
               <Button
                 type="button"

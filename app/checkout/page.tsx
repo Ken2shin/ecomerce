@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, Lock, Truck, AlertCircle } from 'lucide-react';
-import { formatPrice } from '@/lib/currency';
 
 interface OrderData {
   firstName: string;
@@ -20,6 +19,8 @@ interface OrderData {
 
 export default function CheckoutPage() {
   const router = useRouter();
+  
+  // Estados de UI y Formulario
   const [step, setStep] = useState<'shipping' | 'payment' | 'confirmation'>('shipping');
   const [formData, setFormData] = useState<OrderData>({
     firstName: '',
@@ -31,8 +32,51 @@ export default function CheckoutPage() {
     postalCode: '',
     country: 'NI',
   });
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Estados del Carrito
+  const [cartSubtotal, setCartSubtotal] = useState<number>(0);
+  const [isFetchingCart, setIsFetchingCart] = useState<boolean>(true);
+
+  // Cargar datos del carrito desde el localStorage (Igual que en la página del carrito)
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('cart');
+      
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        
+        // Si hay productos válidos en el localStorage
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          // Calculamos el subtotal de forma segura
+          const subtotalCalculado = parsed.reduce((sum, item) => {
+            if (!item) return sum;
+            const precioSeguro = Number(item.precio || item.price || 0);
+            const cantidadSegura = Number(item.cantidad || 1);
+            return sum + (precioSeguro * cantidadSegura);
+          }, 0);
+
+          setCartSubtotal(subtotalCalculado);
+          setIsFetchingCart(false);
+          return; // Terminamos aquí exitosamente
+        }
+      }
+
+      // Si llegamos a este punto, el carrito de verdad está vacío o corrupto
+      router.push('/carrito');
+      
+    } catch (err) {
+      console.error('Error cargando el carrito en el checkout:', err);
+      router.push('/carrito');
+    }
+  }, [router]);
+
+  // Cálculos dinámicos
+  const taxes = cartSubtotal * 0.10; // 10% de impuestos
+  const shippingCost = 0; // Envío estándar gratis
+  const finalTotal = cartSubtotal + taxes + shippingCost;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -52,6 +96,7 @@ export default function CheckoutPage() {
     }
 
     setStep('payment');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePaymentSubmit = async (e: React.FormEvent) => {
@@ -60,15 +105,37 @@ export default function CheckoutPage() {
     setError('');
 
     try {
-      // Simulate payment processing
+      // 1. Simular el procesamiento del pago (2 segundos)
       await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // 2. Limpiar el carrito del localStorage porque la orden ya se pagó
+      localStorage.removeItem('cart');
+
+      // 3. Mostrar confirmación
       setStep('confirmation');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Refrescar para que el navbar actualice la cantidad de items
+      router.refresh(); 
+      
     } catch (err) {
       setError('Error procesando el pago. Intenta de nuevo.');
     } finally {
       setLoading(false);
     }
   };
+
+  // Prevenir que se renderice el formulario si estamos redirigiendo
+  if (isFetchingCart) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-amber-700 font-medium flex items-center gap-2">
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-amber-700"></div>
+          Preparando tu orden...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -84,7 +151,6 @@ export default function CheckoutPage() {
         <div className="mb-12">
           <div className="flex items-center justify-between">
             <div className={`flex flex-col items-center ${step === 'shipping' ? 'text-amber-700' : 'text-gray-400'}`}>
-              {/* SOLUCIÓN: Como es el paso 1, siempre estará activo o completado, se fijan las clases directamente */}
               <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold mb-2 bg-amber-700 text-white">
                 1
               </div>
@@ -130,9 +196,7 @@ export default function CheckoutPage() {
             <form onSubmit={handleShippingSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
                   <input
                     type="text"
                     name="firstName"
@@ -143,11 +207,8 @@ export default function CheckoutPage() {
                     required
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Apellido *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Apellido *</label>
                   <input
                     type="text"
                     name="lastName"
@@ -162,9 +223,7 @@ export default function CheckoutPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico *</label>
                   <input
                     type="email"
                     name="email"
@@ -175,11 +234,8 @@ export default function CheckoutPage() {
                     required
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Teléfono *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono *</label>
                   <input
                     type="tel"
                     name="phone"
@@ -193,9 +249,7 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Dirección *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Dirección *</label>
                 <input
                   type="text"
                   name="address"
@@ -209,9 +263,7 @@ export default function CheckoutPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ciudad *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Ciudad *</label>
                   <input
                     type="text"
                     name="city"
@@ -222,11 +274,8 @@ export default function CheckoutPage() {
                     required
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Código Postal
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Código Postal</label>
                   <input
                     type="text"
                     name="postalCode"
@@ -236,11 +285,8 @@ export default function CheckoutPage() {
                     placeholder="06600"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    País
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">País</label>
                   <select
                     name="country"
                     value={formData.country}
@@ -264,16 +310,18 @@ export default function CheckoutPage() {
                     <p className="font-medium text-gray-900">Envío Estándar</p>
                     <p className="text-sm text-gray-600">5-7 días hábiles • Gratis</p>
                   </div>
-                  <span className="text-lg font-bold text-gray-900">{formatPrice(0)}</span>
+                  <span className="text-lg font-bold text-gray-900">C$0.00</span>
                 </label>
               </div>
 
               <div className="flex gap-4 pt-6">
-                <Link href="/carrito" className="flex-1">
-                  <Button variant="outline" className="w-full">
-                    Volver
-                  </Button>
-                </Link>
+                <button
+                  type="button"
+                  onClick={() => router.push('/carrito')}
+                  className="flex-1 border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-3 rounded-lg transition"
+                >
+                  Volver al Carrito
+                </button>
                 <button
                   type="submit"
                   className="flex-1 bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
@@ -300,9 +348,7 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Número de Tarjeta
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Número de Tarjeta</label>
                 <input
                   type="text"
                   placeholder="4532 1234 5678 9010"
@@ -313,9 +359,7 @@ export default function CheckoutPage() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Vencimiento
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Vencimiento</label>
                   <input
                     type="text"
                     placeholder="MM/YY"
@@ -323,11 +367,8 @@ export default function CheckoutPage() {
                     defaultValue="12/26"
                   />
                 </div>
-
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    CVC
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">CVC</label>
                   <input
                     type="text"
                     placeholder="123"
@@ -338,36 +379,34 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre en la Tarjeta
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nombre en la Tarjeta</label>
                 <input
                   type="text"
                   placeholder="Juan Pérez"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-700"
-                  defaultValue="Juan Pérez"
+                  defaultValue={`${formData.firstName} ${formData.lastName}`.trim()}
                 />
               </div>
 
-              {/* Order Summary */}
+              {/* Order Summary Dinámico */}
               <div className="border-t border-gray-200 pt-6 bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-lg border border-amber-200">
                 <h3 className="font-bold text-gray-900 mb-4">Resumen de Orden</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal</span>
-                    <span>C$10,499.00</span>
+                    <span>C${cartSubtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
-                    <span>Impuestos</span>
-                    <span>C$1,050.00</span>
+                    <span>Impuestos (10%)</span>
+                    <span>C${taxes.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Envío</span>
-                    <span>C$0.00</span>
+                    <span>{shippingCost === 0 ? 'Gratis' : `C$${shippingCost.toFixed(2)}`}</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold text-gray-900 border-t border-amber-300 pt-2 mt-2">
                     <span>Total</span>
-                    <span className="text-amber-700">C$11,549.00</span>
+                    <span className="text-amber-700">C${finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -409,7 +448,7 @@ export default function CheckoutPage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Número de Orden</span>
-                  <span className="font-bold text-gray-900">#ORD-2024-001234</span>
+                  <span className="font-bold text-gray-900">#ORD-{new Date().getFullYear()}-{Math.floor(1000 + Math.random() * 9000)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Correo de Confirmación</span>
@@ -417,7 +456,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Total Pagado</span>
-                  <span className="font-bold text-amber-700">C$11,549.00</span>
+                  <span className="font-bold text-amber-700">C${finalTotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between pt-3 border-t border-gray-300">
                   <span className="text-gray-600 flex items-center gap-2">
@@ -430,16 +469,18 @@ export default function CheckoutPage() {
             </div>
 
             <div className="space-y-3">
-              <Link href="/productos">
-                <Button className="w-full bg-amber-700 hover:bg-amber-800 py-3">
-                  Continuar Comprando
-                </Button>
-              </Link>
-              <Link href="/">
-                <Button variant="outline" className="w-full">
-                  Volver al Inicio
-                </Button>
-              </Link>
+              <button 
+                onClick={() => router.push('/productos')}
+                className="w-full bg-amber-700 hover:bg-amber-800 text-white font-bold py-3 rounded-lg transition"
+              >
+                Continuar Comprando
+              </button>
+              <button 
+                onClick={() => router.push('/')}
+                className="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-3 rounded-lg transition"
+              >
+                Volver al Inicio
+              </button>
             </div>
           </div>
         )}
