@@ -53,70 +53,113 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-amber-50/30 to-white">
-      {/* Hero Banner - Estilo Liquid Glass & Temática Mundial 2026 */}
-      <section className="relative overflow-hidden bg-slate-900 py-20 lg:py-32">
-        {/* Fondo animado estilo fluido (Liquid Glass) con colores del Mundial 2026 (verde, rojo, azul) */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/40 rounded-full mix-blend-screen blur-[120px] animate-pulse"></div>
-          <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-red-600/40 rounded-full mix-blend-screen blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[60%] bg-blue-600/40 rounded-full mix-blend-screen blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
-          {/* Capa de cristal base */}
-          <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
+      
+      {/* Hero Banner - Estilo Oscuro Mundial 2026 (Liquid Glass) */}
+      <section className="relative overflow-hidden bg-[#0a1122] py-20 lg:py-28 border-b border-white/5">
+        
+        {/* Fondos, Gradientes y Decoraciones (Estilo Cancha/Balones) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Brillo Verde Izquierdo */}
+          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[80%] bg-emerald-600/15 rounded-full blur-[130px]"></div>
+          {/* Brillo Azul/Púrpura Derecho */}
+          <div className="absolute top-[10%] right-[-10%] w-[50%] h-[90%] bg-indigo-600/20 rounded-full blur-[130px]"></div>
+          
+          {/* Elementos decorativos simulando balones y geometría de cancha muy sutiles */}
+          <svg className="absolute left-[-5%] top-[10%] w-[30%] h-auto opacity-[0.03] text-white" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0 A50 50 0 1 0 100 50 A50 50 0 0 0 50 0 Z" fill="none" stroke="currentColor" strokeWidth="2"/>
+            <path d="M20 30 L40 50 L20 70 M80 30 L60 50 L80 70 M30 20 L50 40 L70 20 M30 80 L50 60 L70 80" fill="none" stroke="currentColor" strokeWidth="1"/>
+          </svg>
+          <svg className="absolute right-[5%] bottom-[-10%] w-[25%] h-auto opacity-[0.04] text-white rotate-45" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 0 A50 50 0 1 0 100 50 A50 50 0 0 0 50 0 Z" fill="none" stroke="currentColor" strokeWidth="2"/>
+            <polygon points="50,10 85,35 70,80 30,80 15,35" fill="none" stroke="currentColor" strokeWidth="1"/>
+          </svg>
+          
+          {/* Destello estrellado sutil (esquina inferior derecha) */}
+          <div className="absolute bottom-12 right-12 text-white/30 animate-pulse">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+            </svg>
+          </div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            {/* Contenedor de Texto con efecto Liquid Glass */}
-            <div className="z-10 backdrop-blur-xl bg-white/10 border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)] rounded-3xl p-8 lg:p-12 transform transition-all hover:bg-white/20 duration-500">
-              <div className="space-y-6">
-                <div className="inline-block transform transition-transform hover:-translate-y-1 cursor-default">
-                  <span className="backdrop-blur-md bg-white/10 border border-white/30 text-white px-5 py-2 rounded-full text-sm font-semibold shadow-[0_4px_15px_rgba(255,255,255,0.1)] flex items-center gap-2">
-                    ⚽ Edición Especial Mundial 2026
-                  </span>
-                </div>
-                <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-200 to-blue-300 drop-shadow-lg">
-                  La Copa de <br />los Sabores
-                </h1>
-                <p className="text-lg text-white/90 max-w-xl font-light hover:text-white transition-colors duration-300 drop-shadow-sm">
-                  Celebra la máxima fiesta del fútbol con nuestras bebidas artesanales. Un sabor de campeonato, servido en una experiencia de cristal líquido inigualable.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link href="/productos">
-                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-emerald-500/80 to-blue-600/80 hover:from-emerald-400 hover:to-blue-500 text-white font-bold border border-white/30 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-1 rounded-xl">
-                      Explorar Convocatoria
-                    </Button>
-                  </Link>
-                  <Link href="/ofertas">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/5 border-white/30 text-white hover:bg-white/20 hover:border-white font-bold backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 rounded-xl">
-                      Promos Futboleras
-                    </Button>
-                  </Link>
-                </div>
+            {/* Columna Izquierda: Textos y Botones (ocupa 5 columnas) */}
+            <div className="lg:col-span-5 z-10 flex flex-col items-start space-y-6">
+              
+              {/* Badge Edición Especial */}
+              <div className="inline-block">
+                <span className="backdrop-blur-md bg-white/5 border border-white/10 text-blue-100 px-4 py-2 rounded-full text-xs font-semibold shadow-[0_4px_15px_rgba(0,0,0,0.2)] flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-gradient-to-tr from-blue-400 to-emerald-400"></span>
+                  Edición Especial Mundial 2026
+                </span>
+              </div>
+              
+              {/* Título en Mayúsculas con degradado */}
+              <h1 className="text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white via-blue-100 to-emerald-200 drop-shadow-sm uppercase">
+                La Copa De <br /> Los Sabores
+              </h1>
+              
+              {/* Párrafo Descriptivo */}
+              <p className="text-base lg:text-lg text-blue-50/70 max-w-lg font-light leading-relaxed">
+                Celebra la máxima fiesta del fútbol con nuestras bebidas artesanales. Un sabor de campeonato, servido en una experiencia de cristal líquido inigualable.
+              </p>
+              
+              {/* Botones */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto">
+                <Link href="/productos">
+                  <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-400 hover:to-blue-500 text-white font-semibold border-none shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all duration-300 hover:-translate-y-1 rounded-xl px-8">
+                    Explorar Convocatoria
+                  </Button>
+                </Link>
+                <Link href="/ofertas">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/5 border-white/10 text-white hover:bg-white/10 hover:border-white/30 font-semibold backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 rounded-xl px-8">
+                    Promos Futboleras
+                  </Button>
+                </Link>
               </div>
             </div>
             
-            {/* Esfera Liquid Glass con Logo animado */}
-            <div className="hidden lg:flex justify-center perspective-1000 relative">
-              <div className="relative group w-96 h-96 flex items-center justify-center">
-                {/* Aura líquida mutante */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500 via-blue-500 to-red-500 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] opacity-50 blur-2xl group-hover:opacity-80 transition-all duration-700 animate-pulse"></div>
+            {/* Columna Central: Logo FIFA 26 (ocupa 2 columnas) */}
+            <div className="hidden lg:flex lg:col-span-2 justify-center items-center z-10">
+              <div className="opacity-40 hover:opacity-100 transition-opacity duration-500 transform hover:scale-105">
+                {/* Asegúrate de tener esta imagen en tu carpeta public/ */}
+                <img 
+                  src="/fifa26.png" 
+                  alt="FIFA 26" 
+                  className="w-24 h-auto object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                  onError={(e) => {
+                    // Fallback visual en caso de que no esté la imagen
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* Columna Derecha: Logo Rich Shakes en Liquid Glass (ocupa 5 columnas) */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end z-10 perspective-1000 mt-12 lg:mt-0">
+              <div className="relative group w-80 h-80 lg:w-96 lg:h-96 flex items-center justify-center">
                 
-                {/* Contenedor Glassmorphism con forma de gota líquida */}
-                <div className="relative w-80 h-80 backdrop-blur-md bg-white/10 border-t border-l border-white/40 border-b border-r border-white/10 shadow-[20px_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-center transform-gpu transition-all duration-700 group-hover:rotate-y-12 group-hover:rotate-x-12 group-hover:-translate-y-4 group-hover:scale-105 z-10 overflow-hidden"
+                {/* Aura Líquida Resplandeciente */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400 via-blue-400 to-indigo-500 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] opacity-40 blur-3xl group-hover:opacity-70 group-hover:scale-110 transition-all duration-700 animate-pulse"></div>
+                
+                {/* Contenedor Liquid Glass */}
+                <div className="relative w-[280px] h-[280px] lg:w-[320px] lg:h-[320px] backdrop-blur-md bg-white/5 border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center transform-gpu transition-all duration-700 group-hover:rotate-y-6 group-hover:-translate-y-2 z-10 overflow-hidden"
                      style={{ borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%' }}>
                   
-                  {/* Reflejo de cristal curvo superior */}
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/50 to-transparent opacity-60 pointer-events-none z-20 mix-blend-overlay"></div>
+                  {/* Reflejo de cristal interior */}
+                  <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-gradient-to-br from-white/30 to-transparent opacity-80 pointer-events-none rounded-full mix-blend-overlay z-20"></div>
                   
                   <img 
                     src="/logo.jpg" 
                     alt="Rich Shakes Logo" 
-                    className="w-[85%] h-[85%] object-cover rounded-full mix-blend-normal transition-transform duration-700 group-hover:scale-110 shadow-inner z-10"
+                    className="w-[85%] h-[85%] object-cover rounded-full shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] z-10"
                   />
                 </div>
               </div>
             </div>
+            
           </div>
         </div>
       </section>
