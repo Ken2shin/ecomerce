@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -98,9 +99,13 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 group">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-orange-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">RS</span>
-              </div>
+              <Image 
+                src="/logo.jpg" 
+                alt="Rich Shakes Logo" 
+                width={40} 
+                height={40} 
+                className="rounded-lg object-cover"
+              />
               <span className="text-xl font-bold text-gray-900 group-hover:text-amber-700 transition">Rich Shakes</span>
             </div>
           </Link>

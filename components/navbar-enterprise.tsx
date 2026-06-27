@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export function NavbarEnterprise() {
   const pathname = usePathname();
@@ -17,9 +18,13 @@ export function NavbarEnterprise() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl text-primary hover:opacity-80 transition">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">
-              RS
-            </div>
+            <Image 
+              src="/logo.jpg" 
+              alt="Rich Shakes Logo" 
+              width={32} 
+              height={32} 
+              className="rounded-lg object-cover"
+            />
             <span className="hidden sm:inline text-foreground">Rich Shakes</span>
           </Link>
 
