@@ -53,55 +53,66 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-amber-50/30 to-white">
-      {/* Hero Banner - Estilo Premium 3D RGB (Samsung Vibe) */}
-      <section className="relative overflow-hidden bg-gray-950 py-20 lg:py-32">
-        {/* Fondo animado estilo RGB */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/20 rounded-full blur-[100px] animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-600/20 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/20 via-gray-950/80 to-gray-950"></div>
+      {/* Hero Banner - Estilo Liquid Glass & Temática Mundial 2026 */}
+      <section className="relative overflow-hidden bg-slate-900 py-20 lg:py-32">
+        {/* Fondo animado estilo fluido (Liquid Glass) con colores del Mundial 2026 (verde, rojo, azul) */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/40 rounded-full mix-blend-screen blur-[120px] animate-pulse"></div>
+          <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-red-600/40 rounded-full mix-blend-screen blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[60%] bg-blue-600/40 rounded-full mix-blend-screen blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+          {/* Capa de cristal base */}
+          <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="text-white space-y-6 z-10">
-              <div className="inline-block transform transition-transform hover:-translate-y-1 cursor-default">
-                <span className="bg-white/10 border border-white/20 backdrop-blur-md text-amber-300 px-4 py-2 rounded-full text-sm font-semibold shadow-[0_0_15px_rgba(251,191,36,0.2)]">
-                  Bienvenido a Rich Shakes
-                </span>
-              </div>
-              <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-amber-200 to-orange-400 drop-shadow-lg">
-                Sabor Premium <br />en Cada Sorbo
-              </h1>
-              <p className="text-lg text-gray-300 max-w-xl font-light hover:text-white transition-colors duration-300">
-                Descubre nuestras bebidas artesanales y pasteles frescos. Hecho con ingredientes de calidad superior para los amantes del buen sabor.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Link href="/productos">
-                  <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold border-none shadow-[0_0_20px_rgba(217,119,6,0.4)] hover:shadow-[0_0_30px_rgba(217,119,6,0.6)] transition-all duration-300 hover:-translate-y-1">
-                    Explorar Productos
-                  </Button>
-                </Link>
-                <Link href="/ofertas">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent border-white/30 text-white hover:bg-white/10 hover:border-white font-bold backdrop-blur-sm transition-all duration-300 hover:-translate-y-1">
-                    Ver Ofertas
-                  </Button>
-                </Link>
+            
+            {/* Contenedor de Texto con efecto Liquid Glass */}
+            <div className="z-10 backdrop-blur-xl bg-white/10 border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)] rounded-3xl p-8 lg:p-12 transform transition-all hover:bg-white/20 duration-500">
+              <div className="space-y-6">
+                <div className="inline-block transform transition-transform hover:-translate-y-1 cursor-default">
+                  <span className="backdrop-blur-md bg-white/10 border border-white/30 text-white px-5 py-2 rounded-full text-sm font-semibold shadow-[0_4px_15px_rgba(255,255,255,0.1)] flex items-center gap-2">
+                    ⚽ Edición Especial Mundial 2026
+                  </span>
+                </div>
+                <h1 className="text-5xl lg:text-7xl font-extrabold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-emerald-200 to-blue-300 drop-shadow-lg">
+                  La Copa de <br />los Sabores
+                </h1>
+                <p className="text-lg text-white/90 max-w-xl font-light hover:text-white transition-colors duration-300 drop-shadow-sm">
+                  Celebra la máxima fiesta del fútbol con nuestras bebidas artesanales. Un sabor de campeonato, servido en una experiencia de cristal líquido inigualable.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <Link href="/productos">
+                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-emerald-500/80 to-blue-600/80 hover:from-emerald-400 hover:to-blue-500 text-white font-bold border border-white/30 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-1 rounded-xl">
+                      Explorar Convocatoria
+                    </Button>
+                  </Link>
+                  <Link href="/ofertas">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto bg-white/5 border-white/30 text-white hover:bg-white/20 hover:border-white font-bold backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-1 rounded-xl">
+                      Promos Futboleras
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </div>
             
-            {/* Logo 3D con Aura RGB */}
+            {/* Esfera Liquid Glass con Logo animado */}
             <div className="hidden lg:flex justify-center perspective-1000 relative">
-              <div className="relative group w-80 h-80 flex items-center justify-center">
-                {/* Aura RGB Animada */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-violet-500 via-fuchsia-500 to-amber-500 rounded-full blur-2xl opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 animate-pulse"></div>
+              <div className="relative group w-96 h-96 flex items-center justify-center">
+                {/* Aura líquida mutante */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500 via-blue-500 to-red-500 rounded-[40%_60%_70%_30%_/_40%_50%_60%_50%] opacity-50 blur-2xl group-hover:opacity-80 transition-all duration-700 animate-pulse"></div>
                 
-                {/* Logo Flotante 3D */}
-                <div className="relative w-full h-full transform-gpu transition-all duration-500 group-hover:rotate-y-12 group-hover:rotate-x-12 group-hover:-translate-y-4 group-hover:scale-105 z-10 rounded-full border-4 border-white/10 shadow-[0_30px_50px_rgba(0,0,0,0.5)] overflow-hidden bg-white">
+                {/* Contenedor Glassmorphism con forma de gota líquida */}
+                <div className="relative w-80 h-80 backdrop-blur-md bg-white/10 border-t border-l border-white/40 border-b border-r border-white/10 shadow-[20px_20px_50px_rgba(0,0,0,0.3)] flex items-center justify-center transform-gpu transition-all duration-700 group-hover:rotate-y-12 group-hover:rotate-x-12 group-hover:-translate-y-4 group-hover:scale-105 z-10 overflow-hidden"
+                     style={{ borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%' }}>
+                  
+                  {/* Reflejo de cristal curvo superior */}
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/50 to-transparent opacity-60 pointer-events-none z-20 mix-blend-overlay"></div>
+                  
                   <img 
                     src="/logo.jpg" 
                     alt="Rich Shakes Logo" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-[85%] h-[85%] object-cover rounded-full mix-blend-normal transition-transform duration-700 group-hover:scale-110 shadow-inner z-10"
                   />
                 </div>
               </div>
